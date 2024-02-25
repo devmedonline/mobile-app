@@ -1,10 +1,6 @@
 import { StyleSheet } from 'react-native';
 
 export const moduleCardLinkStyles = StyleSheet.create({
-  link: {
-    marginBottom: 10,
-    alignSelf: 'center',
-  },
   container: {
     backgroundColor: 'white',
     padding: 5,
@@ -16,6 +12,8 @@ export const moduleCardLinkStyles = StyleSheet.create({
     elevation: 1,
     flexDirection: 'row',
     height: 160,
+    width: '100%',
+    marginBottom: 10,
   },
   thumbnail: {
     width: 150,
@@ -32,8 +30,8 @@ export const moduleCardLinkStyles = StyleSheet.create({
     fontSize: 20,
     marginBottom: 5,
     paddingHorizontal: 10,
-    width: 300,
     fontFamily: 'Poppins',
+    width: '100%',
   },
   submodulesCount: {
     paddingHorizontal: 10,

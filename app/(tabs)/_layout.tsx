@@ -1,16 +1,17 @@
+import { Header } from '@/components/header';
 import { colors } from '@/constants/colors';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { Tabs } from 'expo-router';
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 type TabBarIconProps = {
   name: React.ComponentProps<typeof FontAwesome>['name'];
-  color: string;
   focused: boolean;
 };
 
-function TabBarIcon({ color, name, focused }: TabBarIconProps) {
+function TabBarIcon({ name, focused }: TabBarIconProps) {
   return (
     <View
       style={[styles.tabIconWrapper, focused && styles.tabIconWrapperFocused]}
@@ -67,41 +68,47 @@ const styles = StyleSheet.create({
 
 export default function TabLayout() {
   return (
-    <Tabs
-      screenOptions={{
-        tabBarStyle: styles.tabBar,
-      }}
-    >
-      <Tabs.Screen
-        name="index"
-        options={{
-          title: 'Resumos',
-          headerShown: false,
-          tabBarItemStyle: styles.tabItem,
-          tabBarLabel: TabBarLabel,
-          tabBarIcon: (props) => <TabBarIcon name="book" {...props} />,
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <Tabs
+        screenOptions={{
+          tabBarStyle: styles.tabBar,
+          headerShadowVisible: false,
+          header(props) {
+            return <Header title={props.options.title ?? 'Tela sem nome'} />;
+          },
         }}
-      />
+      >
+        <Tabs.Screen
+          name="notes/index"
+          options={{
+            title: 'Resumos',
+            headerShown: false,
+            tabBarItemStyle: styles.tabItem,
+            tabBarLabel: TabBarLabel,
+            tabBarIcon: (props) => <TabBarIcon name="book" {...props} />,
+          }}
+        />
 
-      <Tabs.Screen
-        name="simulations"
-        options={{
-          title: 'Simulações',
-          tabBarItemStyle: styles.tabItem,
-          tabBarLabel: TabBarLabel,
-          tabBarIcon: (props) => <TabBarIcon name="calculator" {...props} />,
-        }}
-      />
+        <Tabs.Screen
+          name="simulations/index"
+          options={{
+            title: 'Simulações',
+            tabBarItemStyle: styles.tabItem,
+            tabBarLabel: TabBarLabel,
+            tabBarIcon: (props) => <TabBarIcon name="calculator" {...props} />,
+          }}
+        />
 
-      <Tabs.Screen
-        name="quizzes"
-        options={{
-          title: 'Testes',
-          tabBarItemStyle: styles.tabItem,
-          tabBarLabel: TabBarLabel,
-          tabBarIcon: (props) => <TabBarIcon name="question" {...props} />,
-        }}
-      />
-    </Tabs>
+        <Tabs.Screen
+          name="quizzes/index"
+          options={{
+            title: 'Testes',
+            tabBarItemStyle: styles.tabItem,
+            tabBarLabel: TabBarLabel,
+            tabBarIcon: (props) => <TabBarIcon name="question" {...props} />,
+          }}
+        />
+      </Tabs>
+    </GestureHandlerRootView>
   );
 }

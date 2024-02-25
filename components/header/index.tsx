@@ -5,7 +5,7 @@ import { headerStyles } from './styles';
 
 type HeaderProps = {
   title: string;
-  subtitle: string;
+  subtitle?: string;
   onSearch?: (query: string) => void;
 };
 
@@ -32,7 +32,8 @@ export function Header({ title, subtitle, onSearch }: HeaderProps) {
   return (
     <View style={headerStyles.container}>
       <Text style={headerStyles.title}>{title}</Text>
-      <Text style={headerStyles.subtitle}>{subtitle}</Text>
+
+      {subtitle && <Text style={headerStyles.subtitle}>{subtitle}</Text>}
 
       {onSearch && (
         <View style={headerStyles.searchContainer}>
@@ -43,7 +44,15 @@ export function Header({ title, subtitle, onSearch }: HeaderProps) {
             onChangeText={setSearchQuery}
           />
 
-          <TouchableOpacity style={headerStyles.searchButton}>
+          <TouchableOpacity
+            style={headerStyles.searchButton}
+            activeOpacity={0.75}
+            onPress={() => {
+              if (onSearch) {
+                onSearch(searchQuery);
+              }
+            }}
+          >
             <FontAwesome
               name="search"
               size={24}
