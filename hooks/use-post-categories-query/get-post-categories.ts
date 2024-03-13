@@ -1,4 +1,5 @@
 import { PostCategoryEssentialData } from '@/types/post-category/post-category-essential-data';
+import { PostPreview } from '@/types/post/post';
 import { yolo } from '@/utils/yolo';
 
 export async function getPostCategories(): Promise<
@@ -7,22 +8,39 @@ export async function getPostCategories(): Promise<
   await yolo.sleep(3000);
   yolo.randomlyThrowError(0.1);
 
-  return new Array(20).fill(null).map((_, i) => ({
+  const postPreviewList: PostPreview[] = yolo.range(1, 10).map((i) => ({
     id: i,
-    title: `Módulo lorem ipsum dolor sit amet ${i + 1}`,
-    contentCount: 5,
-    thumbnail: `https://picsum.photos/200/200?random=${i}`,
-    createdAt: new Date(),
-    updatedAt: new Date(),
+    title: yolo.faker.lorem.words(6),
     author: {
-      id: 1,
-      name:
-        ['João', 'Maria', 'José', 'Ana'][i % 4] +
-        ' ' +
-        ['Silva', 'Santos', 'Oliveira', 'Souza'][i % 4],
-      avatar: `https://picsum.photos/30/30?random=${i}`,
-      createdAt: new Date(),
-      email: 'example@email.com',
+      id: i,
+      name: yolo.faker.person.fullName(),
+      avatar: yolo.faker.image.avatar(),
+      createdAt: yolo.faker.date.past(),
+      email: yolo.faker.internet.email(),
     },
+    createdAt: yolo.faker.date.past(),
+    locale: 'en',
+    readingTime: yolo.randomInt(5, 25),
+    thumbnail: yolo.faker.image.urlPicsumPhotos({ width: 640, height: 360 }),
+    updatedAt: yolo.faker.date.recent(),
   }));
+
+  const result: PostCategoryEssentialData[] = yolo.range(1, 10).map((i) => ({
+    id: i,
+    title: yolo.faker.lorem.words(6),
+    posts: postPreviewList,
+    author: {
+      id: i,
+      name: yolo.faker.person.fullName(),
+      avatar: yolo.faker.image.avatar(),
+      createdAt: yolo.faker.date.past(),
+      email: yolo.faker.internet.email(),
+    },
+    createdAt: yolo.faker.date.past(),
+    updatedAt: yolo.faker.date.recent(),
+    contentCount: yolo.randomInt(1, 100),
+    thumbnail: yolo.faker.image.urlPicsumPhotos({ width: 640, height: 360 }),
+  }));
+
+  return result;
 }

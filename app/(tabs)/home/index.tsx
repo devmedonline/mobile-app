@@ -5,7 +5,7 @@ import { colors } from '@/constants/colors';
 import { usePostCategoriesQuery } from '@/hooks/use-post-categories-query';
 import { FontAwesome } from '@expo/vector-icons';
 import { useState } from 'react';
-import { FlatList, Text, View } from 'react-native';
+import { ScrollView, Text, View } from 'react-native';
 
 export default function HomeScreen() {
   const [searchQuery, setSearchQuery] = useState('');
@@ -36,12 +36,12 @@ export default function HomeScreen() {
         onSearch={setSearchQuery}
       />
 
-      <FlatList
-        style={{ paddingHorizontal: 10, marginTop: 10 }}
-        data={filteredPostCategories}
-        keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) => <PostCategoryCardLink postCategory={item} />}
-      />
+      <ScrollView>
+        {filteredPostCategories.length !== 0 &&
+          filteredPostCategories.map((module) => (
+            <PostCategoryCardLink key={module.id} postCategory={module} />
+          ))}
+      </ScrollView>
 
       {filteredPostCategories.length === 0 && (
         <View

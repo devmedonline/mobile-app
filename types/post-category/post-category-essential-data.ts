@@ -1,4 +1,4 @@
-import { PostSubCategoryEssentialData } from '../post-subcategory/post-subcategory';
+import { PostPreview } from '../post/post';
 import { User } from '../user/user';
 
 export type PostCategoryEssentialData = {
@@ -9,9 +9,9 @@ export type PostCategoryEssentialData = {
   author: User;
   createdAt: Date;
   updatedAt: Date;
+  posts: PostPreview[];
 };
 
 export type PostCategory = PostCategoryEssentialData & {
-  subPostCategories: PostSubCategoryEssentialData[];
   description: string;
 };
