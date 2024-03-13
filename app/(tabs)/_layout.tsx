@@ -1,29 +1,10 @@
 import { Header } from '@/components/header';
+import { TabBarIcon } from '@/components/tab-bar-icon';
 import { colors } from '@/constants/colors';
-import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { Tabs } from 'expo-router';
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-
-type TabBarIconProps = {
-  name: React.ComponentProps<typeof FontAwesome>['name'];
-  focused: boolean;
-};
-
-function TabBarIcon({ name, focused }: TabBarIconProps) {
-  return (
-    <View
-      style={[styles.tabIconWrapper, focused && styles.tabIconWrapperFocused]}
-    >
-      <FontAwesome
-        name={name}
-        size={18}
-        style={[styles.tabIcon, focused && styles.TabIconFocused]}
-      />
-    </View>
-  );
-}
 
 type TabBarLabelProps = {
   children: React.ReactNode;
@@ -40,25 +21,6 @@ const styles = StyleSheet.create({
   },
   tabItem: {
     paddingVertical: 5,
-  },
-  tabIconWrapper: {
-    marginBottom: -3,
-    width: 30,
-    height: 30,
-    backgroundColor: colors.primaryForeground + '33',
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 2,
-    borderRadius: 14,
-  },
-  tabIconWrapperFocused: {
-    backgroundColor: colors.primaryForeground,
-  },
-  tabIcon: {
-    color: colors.primaryForeground,
-  },
-  TabIconFocused: {
-    color: colors.primary,
   },
   tabBarLabel: {
     fontSize: 12,
@@ -79,7 +41,7 @@ export default function TabLayout() {
         }}
       >
         <Tabs.Screen
-          name="notes/index"
+          name="home/index"
           options={{
             title: 'Resumos',
             headerShown: false,

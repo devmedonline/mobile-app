@@ -1,29 +1,30 @@
 import { Header } from '@/components/header';
-import { ModuleCardLink } from '@/components/module-card-link';
+import { LoadingIndicator } from '@/components/loading-indicator';
+import { PostCategoryCardLink } from '@/components/post-category-card-link';
 import { colors } from '@/constants/colors';
-import { useModulesQuery } from '@/hooks/use-modules-query';
+import { usePostCategoriesQuery } from '@/hooks/use-post-categories-query';
 import { FontAwesome } from '@expo/vector-icons';
 import { useState } from 'react';
 import { FlatList, Text, View } from 'react-native';
 
-export default function NotesScreen() {
+export default function HomeScreen() {
   const [searchQuery, setSearchQuery] = useState('');
 
-  const modulesQuery = useModulesQuery();
+  const postCategoriesQuery = usePostCategoriesQuery();
 
-  if (modulesQuery.isLoading) {
-    return <Text>Carregando...</Text>;
+  if (postCategoriesQuery.isLoading) {
+    return <LoadingIndicator />;
   }
 
-  if (modulesQuery.isError) {
+  if (postCategoriesQuery.isError) {
     return <Text>Ocorreu um erro</Text>;
   }
 
-  if (typeof modulesQuery.data === 'undefined') {
+  if (typeof postCategoriesQuery.data === 'undefined') {
     return <Text>Nenhum módulo encontrado</Text>;
   }
 
-  const filteredModules = modulesQuery.data.filter((module) =>
+  const filteredPostCategories = postCategoriesQuery.data.filter((module) =>
     module.title.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
@@ -35,14 +36,18 @@ export default function NotesScreen() {
         onSearch={setSearchQuery}
       />
 
+      <View className="bg-red-500 p-4 rounded-md">
+        <Text className="text-white">Olá, mundo!</Text>
+      </View>
+
       <FlatList
         style={{ paddingHorizontal: 10, marginTop: 10 }}
-        data={filteredModules}
+        data={filteredPostCategories}
         keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) => <ModuleCardLink module={item} />}
+        renderItem={({ item }) => <PostCategoryCardLink postCategory={item} />}
       />
 
-      {filteredModules.length === 0 && (
+      {filteredPostCategories.length === 0 && (
         <View
           style={{
             padding: 20,

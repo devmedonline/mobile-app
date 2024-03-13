@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 
-export const moduleCardLinkStyles = StyleSheet.create({
+export const postCategoryCardLinkStyles = StyleSheet.create({
   container: {
     backgroundColor: 'white',
     padding: 5,
@@ -11,6 +11,7 @@ export const moduleCardLinkStyles = StyleSheet.create({
     shadowRadius: 10,
     elevation: 1,
     flexDirection: 'row',
+    display: 'flex',
     height: 160,
     width: '100%',
     marginBottom: 10,

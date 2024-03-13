@@ -1,7 +1,9 @@
-import { ModuleEssentialData } from '@/types/module/module-essential-data';
+import { PostCategoryEssentialData } from '@/types/post-category/post-category-essential-data';
 import { yolo } from '@/utils/yolo';
 
-export async function getModules(): Promise<ModuleEssentialData[]> {
+export async function getPostCategories(): Promise<
+  PostCategoryEssentialData[]
+> {
   await yolo.sleep(3000);
   yolo.randomlyThrowError(0.1);
 
