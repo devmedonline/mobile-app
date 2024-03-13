@@ -36,10 +36,6 @@ export default function HomeScreen() {
         onSearch={setSearchQuery}
       />
 
-      <View className="bg-red-500 p-4 rounded-md">
-        <Text className="text-white">Olá, mundo!</Text>
-      </View>
-
       <FlatList
         style={{ paddingHorizontal: 10, marginTop: 10 }}
         data={filteredPostCategories}
