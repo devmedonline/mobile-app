@@ -40,7 +40,7 @@ export default function RootLayout() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <Stack initialRouteName="(tabs)/home/index">
+      <Stack initialRouteName="(tabs)/home/">
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
       </Stack>
     </QueryClientProvider>

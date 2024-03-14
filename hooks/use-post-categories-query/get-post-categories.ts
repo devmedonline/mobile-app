@@ -19,7 +19,7 @@ export async function getPostCategories(): Promise<
       email: yolo.faker.internet.email(),
     },
     createdAt: yolo.faker.date.past(),
-    locale: 'en',
+    locale: 'pt-br',
     readingTime: yolo.randomInt(5, 25),
     thumbnail: yolo.faker.image.urlPicsumPhotos({ width: 640, height: 360 }),
     updatedAt: yolo.faker.date.recent(),
