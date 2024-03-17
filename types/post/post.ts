@@ -10,3 +10,8 @@ export type PostPreview = {
   createdAt: Date;
   updatedAt: Date;
 };
+
+export type Post = PostPreview & {
+  content: string;
+  tags: string[];
+};

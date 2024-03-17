@@ -1,7 +1,6 @@
-import { getLocaleName } from '@/constants/locale-mapper';
 import { PostCategoryEssentialData } from '@/types/post-category/post-category-essential-data';
+import { cn } from '@/utils/cn';
 import { MaterialIcons } from '@expo/vector-icons';
-import { Link } from 'expo-router';
 import { useState } from 'react';
 import { Image, Pressable, Text, View } from 'react-native';
 import Animated, {
@@ -16,6 +15,7 @@ import Animated, {
   useSharedValue,
   withTiming,
 } from 'react-native-reanimated';
+import { PostCardLink } from '../post-card-link';
 
 type PostCategoryCardLinkProps = { postCategory: PostCategoryEssentialData };
 
@@ -50,6 +50,7 @@ export function PostCategoryCardLink({
 
   const heightAnimationStyle = useAnimatedStyle(() => {
     return {
+      overflow: 'hidden',
       height: interpolate(
         progress.value,
         [0, 1],
@@ -64,7 +65,7 @@ export function PostCategoryCardLink({
   );
 
   return (
-    <View className="flex-1 gap-2 bg-white rounded-lg shadow-md mb-2">
+    <View className="flex-1 rounded-lg shadow-md overflow-hidden min-h-[180px]">
       <Pressable
         onPress={onPress}
         className="flex-row p-2 bg-white rounded-lg shadow-md"
@@ -134,63 +135,24 @@ export function PostCategoryCardLink({
 
       <Animated.View style={heightAnimationStyle}>
         <Animated.View
-          style={{
-            position: 'absolute',
-            width: '100%',
-            top: 0,
-          }}
+          style={{ position: 'absolute', width: '100%', top: 0 }}
           ref={listRef}
         >
-          {postCategory.posts.map((post) => (
-            <Link href={`/posts/${post.id.toString()}/`} asChild>
-              <View
+          {postCategory.posts.map((post, idx, arr) => {
+            const isLast = idx === arr.length - 1;
+            const isFirst = idx === 0;
+
+            return (
+              <PostCardLink
                 key={post.id}
-                className="p-2 border-t flex flex-row border-gray-200 bg-white rounded-b-lg shadow-md"
-              >
-                <Image
-                  source={{ uri: post.thumbnail }}
-                  className="w-1/6 aspect-square rounded-lg"
-                />
-
-                <View className="ml-2 flex flex-col justify-between">
-                  <Text
-                    className="text-xl font-bold"
-                    numberOfLines={2}
-                    ellipsizeMode="tail"
-                  >
-                    {post.title}
-                  </Text>
-
-                  <View>
-                    <Text
-                      className="text-gray-500"
-                      numberOfLines={1}
-                      ellipsizeMode="tail"
-                    >
-                      Postado por {post.author.name} em{' '}
-                      {post.updatedAt.toLocaleDateString(post.locale, {
-                        day: '2-digit',
-                        month: 'long',
-                        year: 'numeric',
-                      })}
-                    </Text>
-
-                    <View className="flex items-center gap-2 flex-row">
-                      <Text
-                        className="text-gray-500"
-                        numberOfLines={1}
-                        ellipsizeMode="tail"
-                      >
-                        Leitura de{' '}
-                        {post.readingTime.toString().padStart(2, '0')} minutos
-                        em {getLocaleName(post.locale)}
-                      </Text>
-                    </View>
-                  </View>
-                </View>
-              </View>
-            </Link>
-          ))}
+                post={post}
+                className={cn(
+                  isFirst && 'rounded-t-lg mt-3',
+                  isLast && 'rounded-b-lg mb-0'
+                )}
+              />
+            );
+          })}
         </Animated.View>
       </Animated.View>
     </View>

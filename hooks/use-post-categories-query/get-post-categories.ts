@@ -2,13 +2,17 @@ import { PostCategoryEssentialData } from '@/types/post-category/post-category-e
 import { PostPreview } from '@/types/post/post';
 import { yolo } from '@/utils/yolo';
 
-export async function getPostCategories(): Promise<
-  PostCategoryEssentialData[]
-> {
-  await yolo.sleep(3000);
-  yolo.randomlyThrowError(0.1);
+export type GetPostCategoriesParams = {
+  query?: string;
+};
 
-  const postPreviewList: PostPreview[] = yolo.range(1, 10).map((i) => ({
+export async function getPostCategories({
+  query,
+}: GetPostCategoriesParams): Promise<PostCategoryEssentialData[]> {
+  await yolo.sleep(1000);
+  yolo.randomlyThrowError(0.25);
+
+  const postPreviewList: PostPreview[] = yolo.range(10, 20).map((i) => ({
     id: i,
     title: yolo.faker.lorem.words(6),
     author: {
@@ -42,5 +46,9 @@ export async function getPostCategories(): Promise<
     thumbnail: yolo.faker.image.urlPicsumPhotos({ width: 640, height: 360 }),
   }));
 
-  return result;
+  return result.filter((postCategory) => {
+    if (!query) return true;
+
+    return postCategory.title.toLowerCase().includes(query.toLowerCase());
+  });
 }
