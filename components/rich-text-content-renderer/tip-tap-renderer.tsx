@@ -3,9 +3,8 @@ import {
   NodeHandlers,
   TipTapRender,
 } from '@troop.com/tiptap-react-render';
-import { Image } from 'expo-image';
 import React from 'react';
-import { Text, TextStyle, View } from 'react-native';
+import { Image, Text, TextStyle, View } from 'react-native';
 
 const Doc: NodeHandler = ({ children }) => <>{children}</>;
 
@@ -83,12 +82,10 @@ const Img: NodeHandler = (props) => {
   const { src, alt, title } = props.node;
   return (
     <Image
-      className="w-full h-64 object-cover rounded-lg shadow-md"
-      source={{ uri: src }}
-      contentFit="cover"
+      className="w-full h-64 object-cover rounded-lg my-2"
+      source={src}
       alt={alt}
       accessibilityLabel={title}
-      transition={1000}
     />
   );
 };

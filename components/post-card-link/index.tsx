@@ -1,6 +1,6 @@
-import { getLocaleName } from '@/constants/locale-mapper';
 import { PostPreview } from '@/types/post/post';
 import { cn } from '@/utils/cn';
+import { formatDateToRelativeTime } from '@/utils/date-format';
 import { Link } from 'expo-router';
 import { Image, Pressable, Text, View } from 'react-native';
 
@@ -10,11 +10,7 @@ type PostCardLinkProps = {
 };
 
 export function PostCardLink({ post, className }: PostCardLinkProps) {
-  const updatedAt = post.updatedAt.toLocaleDateString(post.locale, {
-    day: '2-digit',
-    month: 'long',
-    year: 'numeric',
-  });
+  const updatedAt = formatDateToRelativeTime(post.updatedAt);
 
   return (
     <Link href={`/posts/${post.id.toString()}/`} asChild>
@@ -41,7 +37,7 @@ export function PostCardLink({ post, className }: PostCardLinkProps) {
 
           <View>
             <Text numberOfLines={1} ellipsizeMode="tail">
-              Postado por {post.author.name} em {updatedAt}
+              Postado por {post.author.name} {updatedAt}
             </Text>
 
             <View className="flex items-center gap-2 flex-row">
@@ -51,7 +47,7 @@ export function PostCardLink({ post, className }: PostCardLinkProps) {
                 ellipsizeMode="tail"
               >
                 Leitura de {post.readingTime.toString().padStart(2, '0')}{' '}
-                minutos em {getLocaleName(post.locale)}
+                minutos
               </Text>
             </View>
           </View>

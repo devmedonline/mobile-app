@@ -1,5 +1,6 @@
 import { PostCategoryEssentialData } from '@/types/post-category/post-category-essential-data';
 import { cn } from '@/utils/cn';
+import { formatDateToRelativeTime } from '@/utils/date-format';
 import { MaterialIcons } from '@expo/vector-icons';
 import { useState } from 'react';
 import { Image, Pressable, Text, View } from 'react-native';
@@ -22,11 +23,7 @@ type PostCategoryCardLinkProps = { postCategory: PostCategoryEssentialData };
 export function PostCategoryCardLink({
   postCategory,
 }: PostCategoryCardLinkProps) {
-  const updatedAt = postCategory.updatedAt.toLocaleDateString('pt-BR', {
-    day: '2-digit',
-    month: 'long',
-    year: 'numeric',
-  });
+  const updatedAt = formatDateToRelativeTime(postCategory.updatedAt);
 
   const listRef = useAnimatedRef<Animated.View>();
   const heightValue = useSharedValue(0);
@@ -126,7 +123,7 @@ export function PostCategoryCardLink({
                 numberOfLines={1}
                 ellipsizeMode="tail"
               >
-                Atualizado em {updatedAt}
+                Atualizado {updatedAt}
               </Text>
             </View>
           </View>

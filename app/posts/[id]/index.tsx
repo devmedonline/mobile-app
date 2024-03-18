@@ -95,12 +95,12 @@ export default function PostScreen() {
       </View>
 
       <View className="p-2">
-        <View className="p-4 bg-card rounded border border-border shadow-sm">
+        <View className="p-4 bg-card rounded-lg border border-border shadow-sm">
           <RichTextContentRenderer data={post.content} />
         </View>
       </View>
 
-      <View className="p-2">
+      <View className="p-4">
         <Text className="text-sm text-foreground">
           Última modificação em {modifiedAt}
         </Text>
@@ -109,12 +109,12 @@ export default function PostScreen() {
       <View className="p-4 flex flex-row gap-2">
         <Text>Tags:</Text>
         {post.tags.filter(Boolean).map((tag) => (
-          <View
+          <Text
             key={tag}
-            className="px-2 py-1 flex items-center justify-center bg-brand-300 text-brand-500 rounded-full"
+            className="leading-none text-sm px-2 py-1 flex items-center justify-center bg-brand-300 text-brand-500 rounded-full"
           >
-            <Text className="text-sm text-foreground">{tag}</Text>
-          </View>
+            {tag}
+          </Text>
         ))}
       </View>
     </ScrollView>
