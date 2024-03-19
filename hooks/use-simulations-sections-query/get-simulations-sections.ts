@@ -58,8 +58,8 @@ const fakeData: SimulationSection[] = [
 export async function getSimulationsSections(
   params: GetSimulationsSectionsParams
 ): Promise<SimulationSection[]> {
-  // await yolo.sleep(1000);
-  // yolo.randomlyThrowError();
+  await yolo.sleep(1000);
+  yolo.randomlyThrowError();
 
   return fakeData.filter((section) => {
     if (typeof params.query === 'string' && params.query.length > 0) {
