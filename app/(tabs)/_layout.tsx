@@ -53,6 +53,7 @@ export default function TabLayout() {
           name="simulations"
           options={{
             title: 'Simulações',
+            headerShown: false,
             tabBarLabel: TabBarLabel,
             tabBarActiveTintColor: colors.primaryForeground,
             tabBarInactiveTintColor: colors.mutedForeground,
