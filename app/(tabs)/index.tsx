@@ -1,3 +1,4 @@
+import { SimpleErrorWarningMessage } from '@/components/error-warning-message';
 import { TabScreenHeader } from '@/components/header';
 import { LoadingIndicator } from '@/components/loading-indicator';
 import { PostCategoryCardLink } from '@/components/post-category-card-link';
@@ -8,7 +9,6 @@ import { FlashList } from '@shopify/flash-list';
 import { Fragment, useState } from 'react';
 import { Text, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
-import twColors from 'tailwindcss/colors';
 
 export default function HomeScreen() {
   const [searchQuery, setSearchQuery] = useState('');
@@ -38,12 +38,11 @@ function PostCategoriesSearchList({ query }: { query?: string }) {
 
   if (postCategoriesQuery.isError) {
     return (
-      <View className="flex-1 justify-center items-center gap-10 my-2 mx-2 px-20 py-10 bg-white rounded-lg shadow-md">
-        <FontAwesome name="exclamation" size={32} color={twColors.red[400]} />
-        <Text className="text-red-400 font-bold text-lg">
-          Algo deu errado! {postCategoriesQuery.error.message}
-        </Text>
-      </View>
+      <SimpleErrorWarningMessage
+        message={
+          'Erro ao carregar conteúdo: ' + postCategoriesQuery.error.message
+        }
+      />
     );
   }
 

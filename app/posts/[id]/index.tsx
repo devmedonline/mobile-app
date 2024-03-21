@@ -1,11 +1,10 @@
+import { SimpleErrorWarningMessage } from '@/components/error-warning-message';
 import { LoadingIndicator } from '@/components/loading-indicator';
 import { RichTextContentRenderer } from '@/components/rich-text-content-renderer';
 import { usePostByIdQuery } from '@/hooks/use-post-by-id-query';
-import { FontAwesome } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useLocalSearchParams } from 'expo-router';
 import { Image, ScrollView, Text, View } from 'react-native';
-import twColors from 'tailwindcss/colors';
 
 export default function PostScreen() {
   const searchParams = useLocalSearchParams<{ id: string }>();
@@ -24,12 +23,9 @@ export default function PostScreen() {
 
   if (postByIdQuery.isError) {
     return (
-      <View className="flex-1 justify-center items-center gap-10 my-2 mx-2 px-20 py-10 bg-background rounded-lg shadow-md">
-        <FontAwesome name="exclamation" size={32} color={twColors.red[400]} />
-        <Text className="text-red-400 font-bold text-lg">
-          Algo deu errado! {postByIdQuery.error.message}
-        </Text>
-      </View>
+      <SimpleErrorWarningMessage
+        message={'Erro ao carregar o conteúdo: ' + postByIdQuery.error.message}
+      />
     );
   }
 

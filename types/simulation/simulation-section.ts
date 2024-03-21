@@ -1,16 +1,10 @@
-export type SimulationPreview = {
-  id: number;
-  title: string;
-  thumbnail: string;
-  contentCount: number;
-  createdAt: Date;
-  updatedAt: Date;
-};
+import { SimulationPreview } from './simulation';
 
 export type BaseSimulationSection<T extends string> = {
   id: number;
   title: string;
   type: T;
+  contentCount: number;
   simulations: SimulationPreview[];
 };
 

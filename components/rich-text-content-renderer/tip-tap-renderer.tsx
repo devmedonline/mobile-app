@@ -82,7 +82,7 @@ const Img: NodeHandler = (props) => {
   const { src, alt, title } = props.node;
   return (
     <Image
-      className="w-full h-64 object-cover rounded-lg my-2"
+      className="w-full h-64 object-cover rounded-lg my-2 bg-muted-foreground/50"
       source={src}
       alt={alt}
       accessibilityLabel={title}

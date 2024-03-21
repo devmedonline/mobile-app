@@ -1,23 +1,26 @@
+import { SimpleErrorWarningMessage } from '@/components/error-warning-message';
 import { TabScreenHeader } from '@/components/header';
 import { LoadingIndicator } from '@/components/loading-indicator';
+import { SimulationTypeBadge } from '@/components/simulation-type-badge';
 import { colors } from '@/constants/colors';
 import { useSimulationsSectionsQuery } from '@/hooks/use-simulations-sections-query/use-simulations-sections-query';
+import { SimulationPreview } from '@/types/simulation/simulation';
 import {
   FullPanelSimulationSection,
-  SimulationPreview,
   SimulationSection,
 } from '@/types/simulation/simulation-section';
 import { FontAwesome } from '@expo/vector-icons';
 import { FlashList } from '@shopify/flash-list';
+import { Link } from 'expo-router';
 import { Fragment, useState } from 'react';
 import {
   Image,
+  Pressable,
   ScrollView,
   Text,
   View,
   useWindowDimensions,
 } from 'react-native';
-import twColors from 'tailwindcss/colors';
 
 export default function SimulationsScreen() {
   const [searchQuery, setSearchQuery] = useState<string | undefined>();
@@ -43,12 +46,13 @@ function SimulationsSectionList({ query }: { query?: string }) {
 
   if (simulationSectionsQuery.isError) {
     return (
-      <View className="flex-1 justify-center items-center gap-10 my-2 mx-2 px-20 py-10 bg-white rounded-lg shadow-md">
-        <FontAwesome name="exclamation" size={32} color={twColors.red[400]} />
-        <Text className="text-red-400 font-bold text-lg">
-          Algo deu errado! {simulationSectionsQuery.error.message}
-        </Text>
-      </View>
+      <SimpleErrorWarningMessage
+        onRetry={simulationSectionsQuery.refetch}
+        message={
+          'Erro ao carregar simulações: ' +
+          simulationSectionsQuery.error.message
+        }
+      />
     );
   }
 
@@ -108,26 +112,32 @@ function SimulationsSectionContainer({
   return <View className="flex-1 w-full min-h-80 px-2">{children}</View>;
 }
 
+const SimulationCardLinkWidth = 182;
+const SimulationCardLinkHeight = 252;
 function SimulationCardLink({ simulation }: { simulation: SimulationPreview }) {
   return (
-    <View className="w-44 h-64 border border-muted bg-card rounded-lg shadow overflow-hidden flex-col">
-      <Image
-        source={{ uri: simulation.thumbnail }}
-        className="w-full aspect-square"
-      />
-      <View className="px-2 pb-2 py-1 flex-1 justify-between">
-        <Text
-          numberOfLines={2}
-          ellipsizeMode="tail"
-          className="text-base font-medium text-card-foreground h-12"
-        >
-          {simulation.title}
-        </Text>
-        <Text className="text-xs text-muted-foreground">
-          {simulation.contentCount} simulações
-        </Text>
-      </View>
-    </View>
+    <Link asChild href={`/simulations/${simulation.id.toString()}/`}>
+      <Pressable className="w-52 h-72 border border-muted bg-card rounded-lg shadow overflow-hidden flex-col">
+        <Image
+          source={{ uri: simulation.thumbnail }}
+          className="w-full aspect-square"
+        />
+
+        <View className="px-2 pb-2 py-1 flex-1 justify-between">
+          <Text
+            numberOfLines={2}
+            ellipsizeMode="tail"
+            className="text-base leading-tight font-medium text-card-foreground h-10"
+          >
+            {simulation.title}
+          </Text>
+
+          <View className="flex-1">
+            <SimulationTypeBadge type={simulation.type} />
+          </View>
+        </View>
+      </Pressable>
+    </Link>
   );
 }
 
@@ -144,37 +154,37 @@ function FullPanelSection({
       data={section.simulations}
       keyExtractor={(item) => item.id.toString()}
       renderItem={({ item }) => (
-        <View
-          className="rounded-lg overflow-hidden relative"
-          style={{ width: width - 8 * 4 }}
-        >
-          <Image
-            source={{ uri: item.thumbnail }}
-            className="w-full aspect-video"
-          />
+        <Link asChild href={`/simulations/${item.id.toString()}/`}>
+          <Pressable
+            className="rounded-lg overflow-hidden relative"
+            style={{ width: width - 8 * 4 }}
+          >
+            <Image
+              source={{ uri: item.thumbnail }}
+              className="w-full aspect-video"
+            />
 
-          <View className="absolute bottom-2 left-2 right-2 p-2 rounded-md bg-card-foreground bg-opacity-50">
-            <Text
-              numberOfLines={2}
-              ellipsizeMode="tail"
-              className="text-card text-lg font-bold"
-            >
-              {item.title}
-            </Text>
-            <Text className="text-card text-sm">
-              {item.contentCount} simulações
-            </Text>
-          </View>
-        </View>
+            <View className="absolute bottom-2 left-2 right-2 p-2 rounded-md bg-card">
+              <Text
+                numberOfLines={2}
+                ellipsizeMode="tail"
+                className="text-card-foreground text-lg font-bold"
+              >
+                {item.title}
+              </Text>
+              <SimulationTypeBadge type={item.type} />
+            </View>
+          </Pressable>
+        </Link>
       )}
-      estimatedItemSize={300}
+      estimatedItemSize={width - 8 * 4}
     />
   );
 }
 
 function SimplePanelSection({ section }: { section: SimulationSection }) {
   return (
-    <View className="flex-1 bg-white rounded-lg shadow-md p-2 justify-between">
+    <View className="flex-1 bg-white rounded-lg shadow-md pt-2 px-3 pb-3 gap-3 justify-between">
       <Text className="text-lg font-bold">{section.title}</Text>
 
       <FlashList
@@ -183,7 +193,7 @@ function SimplePanelSection({ section }: { section: SimulationSection }) {
         data={section.simulations}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => <SimulationCardLink simulation={item} />}
-        estimatedItemSize={300}
+        estimatedItemSize={SimulationCardLinkWidth}
       />
     </View>
   );
@@ -191,7 +201,7 @@ function SimplePanelSection({ section }: { section: SimulationSection }) {
 
 function GridPanelSection({ section }: { section: SimulationSection }) {
   return (
-    <View className="flex-1 bg-white rounded-lg shadow-md p-2 justify-between">
+    <View className="flex-1 bg-white rounded-lg shadow-md pt-2 px-3 pb-3 gap-3 justify-between">
       <Text className="text-lg font-bold">{section.title}</Text>
 
       <FlashList
@@ -200,7 +210,7 @@ function GridPanelSection({ section }: { section: SimulationSection }) {
         data={section.simulations}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => <SimulationCardLink simulation={item} />}
-        estimatedItemSize={300}
+        estimatedItemSize={SimulationCardLinkHeight}
       />
     </View>
   );
