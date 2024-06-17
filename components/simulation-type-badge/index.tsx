@@ -19,9 +19,9 @@ export function SimulationTypeBadge({
   };
 
   const typeToColor = {
-    chemical: twColors.red[500],
-    physical: twColors.blue[500],
-    biological: twColors.green[500],
+    chemical: twColors.red[400],
+    physical: twColors.blue[400],
+    biological: twColors.green[400],
   };
 
   const typeIcon = {

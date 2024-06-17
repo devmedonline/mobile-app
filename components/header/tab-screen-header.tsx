@@ -3,6 +3,7 @@ import { FontAwesome } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useEffect, useState } from 'react';
 import { Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 type TabScreenHeaderProps = {
   title: string;
@@ -34,8 +35,13 @@ export function TabScreenHeader({
     }
   }, [debouncedSearchQuery]);
 
+  const insets = useSafeAreaInsets();
+
   return (
-    <View className="p-4 flex flex-col gap-2 text-brand-50 border border-brand-100 mx-2 my-2 rounded-xl overflow-hidden">
+    <View
+      style={{ paddingTop: insets.top + 10 }}
+      className="p-4 flex flex-col gap-2 text-brand-50 border border-brand-100 mx-2 my-2 rounded-xl overflow-hidden"
+    >
       <LinearGradient
         colors={[colors.brand[300], colors.brand[400], colors.brand[500]]}
         className="absolute top-0 left-0 right-0 bottom-0"
